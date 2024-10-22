@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import autores from "../models/Autor.js";
 
 class AutorController {
@@ -12,7 +11,7 @@ class AutorController {
         }
     };
 
-    static listarAutorPorId = async (req, res) => {
+    static listarAutorPorId = async (req, res, next) => {
         try {
             const id = req.params.id;
 
@@ -26,15 +25,7 @@ class AutorController {
                 });
             }
         } catch (erro) {
-            if (erro instanceof mongoose.Error.CastError) {
-                res.status(400).send({
-                    message: "Id do Autor inválido.",
-                });
-            }
-
-            res.status(500).send({
-                message: `${erro.message} - Erro interno no servidor.`,
-            });
+            next(erro);
         }
     };
 

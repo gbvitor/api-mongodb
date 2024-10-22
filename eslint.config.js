@@ -3,7 +3,7 @@ import globals from "globals";
 
 export default [
     {
-        env: { node: true },
+        env: { node: true, browser: true, es2020: true },
         languageOptions: { globals: globals.browser },
         rules: {
             indent: ["error", 2],
