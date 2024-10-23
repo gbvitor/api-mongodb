@@ -47,11 +47,18 @@ class AutorController {
       try {
          const id = req.params.id;
 
-         await autores.findByIdAndUpdate(id, { $set: req.body });
-
-         res.status(200).send({ message: "Autor atualizado com sucesso" });
+         const autoresResultado = await autores.findByIdAndUpdate(id, {
+            $set: req.body,
+         });
+         if (!autoresResultado) {
+            return res
+               .status(404)
+               .send({ message: "Autor não encontrado para atualizar." });
+         } else {
+            res.status(200).send({ message: "Autor atualizado com sucesso" });
+         }
       } catch (erro) {
-         res.status(500).send({ message: erro.message });
+         next(erro);
       }
    };
 

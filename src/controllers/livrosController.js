@@ -49,9 +49,17 @@ class LivroController {
       try {
          const id = req.params.id;
 
-         await livros.findByIdAndUpdate(id, { $set: req.body });
+         const livroParaAtualizar = await livros.findByIdAndUpdate(id, {
+            $set: req.body,
+         });
 
-         res.status(200).send({ message: "Livro atualizado com sucesso" });
+         if (!livroParaAtualizar) {
+            return res
+               .status(404)
+               .send({ message: "Livro não encontrado para o ID informado" });
+         } else {
+            res.status(200).send({ message: "Livro atualizado com sucesso" });
+         }
       } catch (erro) {
          res.status(500).send({ message: erro.message });
       }

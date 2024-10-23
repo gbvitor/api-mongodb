@@ -4,7 +4,11 @@ import globals from "globals";
 export default [
    {
       env: { node: true, browser: true, es2020: true },
-      languageOptions: { globals: globals.browser },
+      languageOptions: {
+         globals: globals.browser,
+         globals: globals.node,
+         globals: globals.es2020,
+      },
       rules: {
          indent: ["error", 2],
          "linebreak-style": ["error", "unix"],
