@@ -3,11 +3,16 @@ import globals from "globals";
 
 export default [
    {
-      env: { node: true, browser: true, es2020: true },
+      env: {
+         node: true,
+         browser: true,
+         es2020: true,
+      },
       languageOptions: {
-         globals: globals.browser,
-         globals: globals.node,
-         globals: globals.es2020,
+         globals: globals,
+         parserOptions: {
+            ecmaVersion: 2020, // Make sure the ECMAScript version is set
+         },
       },
       rules: {
          indent: ["error", 2],
