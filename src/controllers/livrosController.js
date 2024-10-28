@@ -89,17 +89,22 @@ class LivroController {
         }
     };
 
-    // Método estático para listar livros por editora
-    static listarLivroPorEditora = async (req, res, next) => {
+    // Método estático para listar livros por filtro
+    static listarLivroPorFiltro = async (req, res, next) => {
         try {
-            const editora = req.query.editora; // Obtém a editora da query string
-            if (!editora) {
-                return res
-                    .status(400)
-                    .json({ message: "Editora não informada." }); // Resposta 400 se a editora não for fornecida
+            const { editora, titulo } = req.query;
+            // Verifica os parâmetros ausentes usando a função auxiliar
+
+            // Se houver parâmetros ausentes, retorna a mensagem de erro
+            if (faltandoParametros.length > 0) {
+                return res.status(400).json({
+                    message: `Parâmetro(s) ausente(s): ${faltandoParametros.join(
+                        ", "
+                    )}`,
+                });
             }
 
-            const livrosResultado = await livros.find({ editora }); // Busca os livros pela editora
+            const livrosResultado = await livros.find({ editora, titulo }); // Busca os livros pela editora
             res.status(200).json(livrosResultado); // Retorna a lista de livros
         } catch (erro) {
             next(erro); // Passa o erro para o middleware de tratamento
