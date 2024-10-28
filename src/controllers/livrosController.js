@@ -1,4 +1,5 @@
-import { livros } from "../models/index.js"; // Importa o modelo de livro
+import { livros } from "../models/index.js";
+import NaoEncontrado from "../erros/NaoEncontrado.js"; // Importa o modelo de livro
 
 class LivroController {
     // Método estático para listar todos os livros
@@ -24,9 +25,7 @@ class LivroController {
                 .exec(); // Busca o livro
 
             if (!livroResultado) {
-                return res
-                    .status(404)
-                    .json({ message: "Livro não localizado." }); // Resposta 404 se não encontrado
+                next(new NaoEncontrado("Livro não encontrado"));
             }
 
             res.status(200).json(livroResultado); // Retorna o livro encontrado
@@ -57,9 +56,7 @@ class LivroController {
             ); // Atualiza o livro
 
             if (!livroAtualizado) {
-                return res
-                    .status(404)
-                    .json({ message: "Livro não encontrado." }); // Resposta 404 se não encontrado
+               next(new NaoEncontrado("Livro não encontrado"));
             }
 
             res.status(200).json({
@@ -78,9 +75,7 @@ class LivroController {
             const livroRemovido = await livros.findByIdAndDelete(id); // Tenta excluir o livro
 
             if (!livroRemovido) {
-                return res
-                    .status(404)
-                    .json({ message: "Livro não encontrado." }); // Resposta 404 se não encontrado
+                next(new NaoEncontrado("Livro não encontrado"));
             }
 
             res.status(200).json({ message: "Livro removido com sucesso" }); // Retorna mensagem de sucesso
@@ -93,14 +88,10 @@ class LivroController {
     static listarLivroPorFiltro = async (req, res, next) => {
         try {
             const { editora, titulo } = req.query;
-            // Verifica os parâmetros ausentes usando a função auxiliar
 
-            // Se houver parâmetros ausentes, retorna a mensagem de erro
-            if (faltandoParametros.length > 0) {
+            if (editora,titulo) {
                 return res.status(400).json({
-                    message: `Parâmetro(s) ausente(s): ${faltandoParametros.join(
-                        ", "
-                    )}`,
+                   message: ""
                 });
             }
 

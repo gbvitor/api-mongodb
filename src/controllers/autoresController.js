@@ -76,9 +76,7 @@ class AutorController {
 
             // Verifica se o autor foi encontrado para atualizar
             if (!autorAtualizado) {
-                return res
-                    .status(404)
-                    .send({ message: "Autor não encontrado para atualizar." });
+                next(new NaoEncontrado("Autor não encontrado"));
             }
 
             res.status(200).send({
@@ -106,9 +104,7 @@ class AutorController {
 
             // Verifica se o autor foi encontrado para remover
             if (!autorRemovido) {
-                return res
-                    .status(404)
-                    .send({ message: "Autor não encontrado para remover." });
+                next(new NaoEncontrado("Autor não encontrado"));
             }
 
             res.status(200).send({ message: "Autor removido com sucesso" });
