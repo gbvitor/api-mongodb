@@ -26,9 +26,9 @@ class LivroController {
 
             if (!livroResultado) {
                 next(new NaoEncontrado("Livro não encontrado"));
-            }
-
-            res.status(200).json(livroResultado); // Retorna o livro encontrado
+            } else {
+                res.status(200).json(livroResultado);
+            } // Retorna o livro encontrado}
         } catch (erro) {
             next(erro); // Passa o erro para o middleware de tratamento
         }
@@ -57,12 +57,12 @@ class LivroController {
 
             if (!livroAtualizado) {
                next(new NaoEncontrado("Livro não encontrado"));
+            } else {
+                res.status(200).json({
+                    message: "Livro atualizado com sucesso",
+                    livro: livroAtualizado,
+                }); // Retorna mensagem de sucesso
             }
-
-            res.status(200).json({
-                message: "Livro atualizado com sucesso",
-                livro: livroAtualizado,
-            }); // Retorna mensagem de sucesso
         } catch (erro) {
             next(erro); // Passa o erro para o middleware de tratamento
         }
@@ -76,9 +76,9 @@ class LivroController {
 
             if (!livroRemovido) {
                 next(new NaoEncontrado("Livro não encontrado"));
-            }
-
-            res.status(200).json({ message: "Livro removido com sucesso" }); // Retorna mensagem de sucesso
+            } else {
+                res.status(200).json({ message: "Livro removido com sucesso" }); // Retorna mensagem de sucesso
+                 }
         } catch (erro) {
             next(erro); // Passa o erro para o middleware de tratamento
         }

@@ -77,12 +77,12 @@ class AutorController {
             // Verifica se o autor foi encontrado para atualizar
             if (!autorAtualizado) {
                 next(new NaoEncontrado("Autor não encontrado"));
+            } else{
+                res.status(200).send({
+                    message: "Autor atualizado com sucesso",
+                    autor: autorAtualizado,
+                });
             }
-
-            res.status(200).send({
-                message: "Autor atualizado com sucesso",
-                autor: autorAtualizado,
-            });
         } catch (erro) {
             console.error("Erro ao atualizar autor:", erro);
             next(erro);
@@ -105,9 +105,9 @@ class AutorController {
             // Verifica se o autor foi encontrado para remover
             if (!autorRemovido) {
                 next(new NaoEncontrado("Autor não encontrado"));
+            } else{
+                res.status(200).send({ message: "Autor removido com sucesso" });
             }
-
-            res.status(200).send({ message: "Autor removido com sucesso" });
         } catch (erro) {
             console.error("Erro ao excluir autor:", erro);
             next(erro);
