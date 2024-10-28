@@ -13,13 +13,9 @@ db.once("open", () => {
 });
 
 const app = express();
-
 app.use(express.json());
-
 routes(app);
-
 app.use(manipuladorDeErros);
-
 app.use(manipulador404);
 
 export default app;

@@ -3,15 +3,11 @@ import globals from "globals";
 
 export default [
    {
-      env: {
-         node: true,
-         browser: true,
-         es2020: true,
-      },
+      files: ["*.js"], // ou a extensão que você estiver usando
       languageOptions: {
-         globals: globals,
+         globals,
          parserOptions: {
-            ecmaVersion: 2020, // Make sure the ECMAScript version is set
+            ecmaVersion: 2020,
          },
       },
       rules: {
