@@ -1,4 +1,4 @@
-import livros from "../models/Livro.js"; // Importa o modelo de livro
+import { livros } from "../models/index.js"; // Importa o modelo de livro
 
 class LivroController {
     // Método estático para listar todos os livros

@@ -1,5 +1,6 @@
 import mongoose from "mongoose"; // Importa o mongoose para validação de ID
-import autores from "../models/Autor.js"; // Importa o modelo de autor
+import NaoEncontrado from "../erros/NaoEncontrado.js";
+import { autores } from "../models/index.js"; // Importa o modelo de autor
 
 class AutorController {
     // Método estático para listar todos os autores
@@ -33,7 +34,7 @@ class AutorController {
             if (autorResultado) {
                 res.status(200).send(autorResultado);
             } else {
-                res.status(404).send({ message: "Autor não localizado." });
+                next(new NaoEncontrado("Autor não encontrado"));
             }
         } catch (erro) {
             console.error("Erro ao listar autor por ID:", erro);
