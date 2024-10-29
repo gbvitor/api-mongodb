@@ -1,5 +1,5 @@
-import { livros } from "../models/index.js";
 import NaoEncontrado from "../erros/NaoEncontrado.js"; // Importa o modelo de livro
+import { livros } from "../models/index.js";
 
 class LivroController {
     // Método estático para listar todos os livros
@@ -56,7 +56,7 @@ class LivroController {
             ); // Atualiza o livro
 
             if (!livroAtualizado) {
-               next(new NaoEncontrado("Livro não encontrado"));
+                next(new NaoEncontrado("Livro não encontrado"));
             } else {
                 res.status(200).json({
                     message: "Livro atualizado com sucesso",
@@ -78,7 +78,7 @@ class LivroController {
                 next(new NaoEncontrado("Livro não encontrado"));
             } else {
                 res.status(200).json({ message: "Livro removido com sucesso" }); // Retorna mensagem de sucesso
-                 }
+            }
         } catch (erro) {
             next(erro); // Passa o erro para o middleware de tratamento
         }
@@ -89,14 +89,23 @@ class LivroController {
         try {
             const { editora, titulo } = req.query;
 
-            if (editora,titulo) {
-                return res.status(400).json({
-                   message: ""
-                });
-            }
+            const busca = {};
 
-            const livrosResultado = await livros.find({ editora, titulo }); // Busca os livros pela editora
-            res.status(200).json(livrosResultado); // Retorna a lista de livros
+            if (editora) {
+                busca.editora = editora;
+            }
+            if (titulo) {
+                busca.titulo = { $regex: titulo, $options: "i" };
+            }
+            if (!editora && !titulo) {
+                next(new NaoEncontrado("Filtro inválido"));
+            } else {
+                const livrosResultado = await livros
+                    .find(busca)
+                    .populate("autor")
+                    .exec();
+                res.status(200).json(livrosResultado);
+            }
         } catch (erro) {
             next(erro); // Passa o erro para o middleware de tratamento
         }
