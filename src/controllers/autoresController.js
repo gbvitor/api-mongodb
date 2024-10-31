@@ -6,13 +6,10 @@ class AutorController {
     // Método estático para listar todos os autores
     static listarAutores = async (req, res, next) => {
         try {
-            // Busca todos os autores no banco de dados
-            const autoresResultado = await autores.find();
-            // Retorna a lista de autores com status 200 (OK)
-            res.status(200).json(autoresResultado);
+            const autoresResultado = autores.find();
+            req.resultado = autoresResultado;
+            next();
         } catch (erro) {
-            // Log do erro para depuração e envio ao próximo middleware
-            console.error("Erro ao listar autores:", erro);
             next(erro);
         }
     };
@@ -77,7 +74,7 @@ class AutorController {
             // Verifica se o autor foi encontrado para atualizar
             if (!autorAtualizado) {
                 next(new NaoEncontrado("Autor não encontrado"));
-            } else{
+            } else {
                 res.status(200).send({
                     message: "Autor atualizado com sucesso",
                     autor: autorAtualizado,
@@ -105,7 +102,7 @@ class AutorController {
             // Verifica se o autor foi encontrado para remover
             if (!autorRemovido) {
                 next(new NaoEncontrado("Autor não encontrado"));
-            } else{
+            } else {
                 res.status(200).send({ message: "Autor removido com sucesso" });
             }
         } catch (erro) {

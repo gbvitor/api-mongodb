@@ -6,21 +6,9 @@ class LivroController {
     // Método estático para listar todos os livros
     static listarLivros = async (req, res, next) => {
         try {
-            let { limit = 5, pagina = 1 } = req.query; // Obtém os parâmetros da requisição
-            limit = parseInt(limit); // Limite max. de registros por página
-            pagina = parseInt(pagina); // Página atual
-
-            if (!limit || !pagina) {
-                next(new ErroRequisicaoIncorreta()); // Valida os parâmetros
-            } else {
-                const livrosResultado = await livros
-                    .find()
-                    .skip((pagina - 1) * limit)
-                    .limit(Number(limit))
-                    .populate("autor")
-                    .exec(); // Popula os autores
-                res.status(200).json(livrosResultado); // Retorna a lista de livros
-            }
+            const livrosResultado = livros.find();
+            req.resultado = livrosResultado;
+            next(); // Chama o próximo middleware com o resultado
         } catch (erro) {
             next(erro); // Passa o erro para o middleware de tratamento
         }
@@ -101,14 +89,12 @@ class LivroController {
         try {
             const busca = await processaBuasca(req.query); // Processa os parâmetros de busca
 
-            if (Object.keys(busca).length === 0) {
-                next(new NaoEncontrado("Filtro inválido"));
+            if (busca) {
+                const livrosResultado = livros.find(busca).populate("autor");
+                req.resultado = livrosResultado;
+                next(); // Chama o middleware com o resultado
             } else {
-                const livrosResultado = await livros
-                    .find(busca)
-                    .populate("autor")
-                    .exec();
-                res.status(200).json(livrosResultado);
+                next(new ErroRequisicaoIncorreta("Requisição Incorreta"));
             }
         } catch (erro) {
             next(erro); // Passa o erro para o middleware de tratamento
